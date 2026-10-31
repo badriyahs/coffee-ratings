@@ -9,4 +9,4 @@ On the search for the best coffee in Kuwait.
 
 Firebase accounts (Authentication → Email/Password, made in the console):
 - `taster@<project>.firebaseapp.com` — its password is the site password
-- Badriyah's own email — admin page
+- `badriyah@<project>.firebaseapp.com` — admin page (sign in with username `badriyah`)

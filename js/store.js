@@ -177,7 +177,9 @@ window.Store = (function () {
     },
     async signIn(email, password) {
       await ready;
-      await firebase.auth().signInWithEmailAndPassword(String(email || '').trim(), password);
+      // A plain username like "badriyah" means badriyah@<authDomain>
+      const name = String(email || '').trim().toLowerCase();
+      await firebase.auth().signInWithEmailAndPassword(name.includes('@') ? name : name + '@' + cfg.authDomain, password);
     },
     async signOut() { await ready; await firebase.auth().signOut(); }
   };

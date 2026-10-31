@@ -23,7 +23,7 @@
     e.preventDefault();
     $('signInErr').hidden = true;
     Store.signIn($('email').value, $('password').value).catch(() => {
-      $('signInErr').textContent = 'Email or password is wrong';
+      $('signInErr').textContent = 'Username or password is wrong';
       $('signInErr').hidden = false;
     });
   });
