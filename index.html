@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Coffee Ratings</title>
+  <meta name="description" content="On the search for the best coffee in Kuwait.">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=10311200">
+</head>
+<body>
+  <nav class="topbar">
+    <a class="mark" href="#top" aria-label="Coffee Ratings">CR</a>
+    <div class="links" id="navLinks" hidden>
+      <a href="#today">Today</a>
+      <a href="#ratings">Ratings</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <svg class="hero-cup" viewBox="0 0 120 120" aria-hidden="true">
+      <circle cx="60" cy="60" r="46"></circle>
+      <circle cx="60" cy="60" r="30"></circle>
+      <circle cx="60" cy="60" r="24" class="fill"></circle>
+      <path d="M90 52 q14 8 0 16"></path>
+    </svg>
+    <h1>Coffee Ratings</h1>
+    <p class="tagline">On the search for the best coffee in Kuwait</p>
+    <form class="gate" id="gate" hidden>
+      <input type="text" autocomplete="username" value="taster" hidden aria-hidden="true" tabindex="-1">
+      <label for="pw" class="sr">Password</label>
+      <input type="password" id="pw" placeholder="Password" autocomplete="current-password" required>
+      <button class="btn" type="submit">Enter</button>
+      <p class="err" id="gateErr" hidden></p>
+    </form>
+  </header>
+
+  <main id="main" hidden>
+    <section class="today" id="today" aria-labelledby="todayTitle">
+      <h2 class="eyebrow" id="todayTitle">Today's coffee</h2>
+      <div id="todayCards"></div>
+    </section>
+
+    <section class="ratings" id="ratings" aria-labelledby="ratingsTitle">
+      <div class="ratings-head">
+        <h2 class="eyebrow" id="ratingsTitle">Ratings</h2>
+        <div class="sort" role="group" aria-label="Sort">
+          <button type="button" id="sortNew" aria-pressed="true">Newest</button>
+          <button type="button" id="sortBest" aria-pressed="false">Best</button>
+        </div>
+      </div>
+      <div class="table" role="table" aria-labelledby="ratingsTitle">
+        <div class="tr th" role="row">
+          <span role="columnheader">Date</span>
+          <span role="columnheader">Café</span>
+          <span role="columnheader">Coffee</span>
+          <span role="columnheader">Rating</span>
+          <span role="columnheader">Comment</span>
+        </div>
+        <div id="rows" role="rowgroup"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">Coffee Ratings · Kuwait</footer>
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/config.js?v=10311200"></script>
+  <script src="js/ui.js?v=10311200"></script>
+  <script src="js/store.js?v=10311200"></script>
+  <script src="js/site.js?v=10311200"></script>
+</body>
+</html>
