@@ -72,7 +72,7 @@
           '<div class="date">' + esc(fmtDate(c.date)) + '</div>' +
           '<div class="td-cafe">' + esc(c.cafe) + '</div>' +
           '<div>' + esc(c.order) + (c.beans ? ' · <span class="status">' + esc(c.beans) + '</span>' : '') + '</div>' +
-          '<div class="status">' + (c.rating ? mini(c.rating, c.heart) + (c.comment ? ' “' + esc(c.comment) + '”' : '') : 'Not rated yet') + '</div>' +
+          '<div class="status">' + (c.rating ? mini(c.rating, c.heart) + (c.comment ? ' “' + esc(c.comment) + '”' : '') + (c.notes ? ' · ' + esc(c.notes) : '') : 'Not rated yet') + '</div>' +
         '</div><div class="tools">' + tools + '</div></div>';
     }).join('') : '<p class="status" style="padding:16px 0">No coffees yet</p>';
 

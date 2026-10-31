@@ -4,7 +4,8 @@
    Live mode (Firebase config in js/config.js): Firestore, updating live for everyone.
 
    coffees/{id}   cafe, date (YYYY-MM-DD), order, beans, description, createdAt   (added by Badriyah)
-                  rating (1-5), heart (only with 5), comment, ratedAt              (added by the rater) */
+                  description = what the beans are supposed to taste like ("earthy, chocolatey and spicy")
+                  rating (1-5), heart (only with 5), comment, notes, ratedAt       (added by the taster) */
 window.Store = (function () {
   const cfg = (window.CR_CONFIG || {}).firebase;
   const demo = !cfg;
@@ -20,7 +21,7 @@ window.Store = (function () {
   });
   const ratingBody = r => {
     const rating = Math.max(1, Math.min(5, Math.round(+r.rating || 0)));
-    return { rating, heart: !!r.heart && rating === 5, comment: clean(r.comment, 1000) };
+    return { rating, heart: !!r.heart && rating === 5, comment: clean(r.comment, 1000), notes: clean(r.notes, 1000) };
   };
 
   /* ---------- preview mode ---------- */
@@ -55,9 +56,9 @@ window.Store = (function () {
         sample: {
           id: 'sample', date: UI.todayKW(), createdAt: Date.now(),
           cafe: 'Sample café',
-          order: 'V60 pour-over',
-          beans: 'Ethiopia Guji · natural',
-          description: 'Grown at about 2,000 metres and dried in the cherry, so it tastes bright and fruity: blueberry, jasmine, a little honey. Best without milk.'
+          order: 'Hot V60',
+          beans: 'Ethiopia Guji',
+          description: 'fruity, floral and bright'
         }
       }
     };

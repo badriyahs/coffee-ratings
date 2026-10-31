@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,600;6..12,700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=10311530">
+  <link rel="stylesheet" href="css/style.css?v=10311600">
 </head>
 <body class="admin">
   <nav class="topbar">
@@ -34,9 +34,9 @@
         <h1 class="eyebrow" id="formTitle">Add a coffee</h1>
         <div class="field"><label for="date">Date</label><input type="date" id="date" required></div>
         <div class="field"><label for="cafe">Café</label><input type="text" id="cafe" list="cafes" maxlength="120" required></div>
-        <div class="field"><label for="order">Coffee</label><input type="text" id="order" maxlength="160" placeholder="V60 pour-over" required></div>
-        <div class="field"><label for="beans">Beans</label><input type="text" id="beans" maxlength="160" placeholder="Ethiopia Guji · natural"></div>
-        <div class="field"><label for="description">Description</label><textarea id="description" maxlength="2000"></textarea></div>
+        <div class="field"><label for="order">Order</label><input type="text" id="order" maxlength="160" placeholder="Hot Chemex" required></div>
+        <div class="field"><label for="beans">Beans</label><input type="text" id="beans" maxlength="160" placeholder="Indonesia Aceh"></div>
+        <div class="field"><label for="description">Supposed to be</label><input type="text" id="description" maxlength="200" placeholder="earthy, chocolatey and spicy"></div>
         <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
           <button class="btn" type="submit" id="saveBtn">Add</button>
           <button class="btn-line" type="button" id="cancelEdit" hidden>Cancel</button>
@@ -53,9 +53,9 @@
   <div class="toast" id="toast" hidden></div>
 
   <script>window.CR_ADMIN = true;</script>
-  <script src="js/config.js?v=10311530"></script>
-  <script src="js/ui.js?v=10311530"></script>
-  <script src="js/store.js?v=10311530"></script>
-  <script src="js/admin.js?v=10311530"></script>
+  <script src="js/config.js?v=10311600"></script>
+  <script src="js/ui.js?v=10311600"></script>
+  <script src="js/store.js?v=10311600"></script>
+  <script src="js/admin.js?v=10311600"></script>
 </body>
 </html>

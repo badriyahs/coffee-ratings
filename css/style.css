@@ -97,6 +97,16 @@ main {
   font-size: clamp(24px, 4vw, 32px); letter-spacing: .1em; line-height: 1.2;
   overflow-wrap: anywhere;
 }
+.ask {
+  margin: 4px 0 6px;
+  font-family: var(--caps); font-weight: 300; text-transform: uppercase;
+  font-size: clamp(22px, 3.4vw, 30px); letter-spacing: .12em; line-height: 1.25;
+  text-wrap: balance;
+}
+.said { margin: 0; font-size: 18px; line-height: 1.6; max-width: 46ch; overflow-wrap: anywhere; }
+.said b { font-weight: 700; }
+.ask-2 { margin: 10px 0 0; font-family: var(--caps); text-transform: uppercase; letter-spacing: .16em; font-size: 14px; }
+.done-text { margin: -10px 0 0; overflow-wrap: anywhere; }
 .order { margin: 0; font-weight: 700; font-size: 17px; }
 .beans { margin: -6px 0 0; color: var(--stone); }
 .desc { margin: 8px 0 0; max-width: 60ch; overflow-wrap: anywhere; }
@@ -172,7 +182,7 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
 .table { border-top: 1px solid var(--ink); }
 .tr {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1.1fr) minmax(0, 1.4fr) 120px minmax(0, 2fr);
+  grid-template-columns: 100px minmax(0, 1fr) minmax(0, 1.3fr) 110px minmax(0, 1.6fr) minmax(0, 1.6fr);
   gap: 20px; align-items: start;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
@@ -186,7 +196,7 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
 .td-cafe { font-family: var(--caps); text-transform: uppercase; letter-spacing: .08em; font-size: 14px; padding-top: 2px; }
 .td-coffee b { font-weight: 700; display: block; }
 .td-coffee span { color: var(--stone); font-size: 14px; }
-.td-comment { font-size: 15px; }
+.td-comment, .td-notes { font-size: 15px; }
 .tr.loved { background: linear-gradient(90deg, rgba(176, 71, 58, .05), transparent 60%); }
 
 .empty {
@@ -235,7 +245,7 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
   .th { display: none; }
   .tr {
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "cafe rating" "coffee coffee" "comment comment" "date date";
+    grid-template-areas: "cafe rating" "coffee coffee" "comment comment" "notes notes" "date date";
     gap: 6px 12px; padding: 18px 0;
   }
   .td-date { grid-area: date; font-size: 13px; }
@@ -243,6 +253,8 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
   .td-coffee { grid-area: coffee; }
   .td-rating { grid-area: rating; }
   .td-comment { grid-area: comment; }
+  .td-notes { grid-area: notes; color: var(--stone); }
+  .td-notes:empty, .td-comment:empty { display: none; }
 }
 
 /* Admin */
@@ -261,3 +273,4 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 .mini.big svg { width: 26px; height: 26px; }
 .mini.big .heart { margin-left: 10px; }
+.word:empty { display: none; }

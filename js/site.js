@@ -7,9 +7,8 @@
     loaded: false,
     coffees: [],
     sort: 'new',
-    drafts: {},            // id -> {rating, heart, comment} while rating
+    drafts: {},            // id -> {rating, heart, comment, notes} while rating
     justRated: new Set(),  // rated during this visit: keep showing them with a thank-you
-    changing: new Set(),   // reopened to change the rating
     saving: new Set(),
     todaySig: ''
   };
@@ -25,17 +24,20 @@
   }
 
   function draftFor(c) {
-    if (!state.drafts[c.id]) state.drafts[c.id] = { rating: c.rating || 0, heart: !!c.heart, comment: c.comment || '' };
+    if (!state.drafts[c.id]) state.drafts[c.id] = { rating: 0, heart: false, comment: '', notes: '' };
     return state.drafts[c.id];
   }
 
+  // Her note: "How was today's coffee? It was from …, …, beans: … From my research … But how was it?"
   function info(c) {
+    const from = [c.cafe && '<b>' + esc(c.cafe) + '</b>', c.order && '<b>' + esc(c.order) + '</b>',
+      c.beans && 'beans: <b>' + esc(c.beans) + '</b>'].filter(Boolean).join(', ');
     return '<div class="card-info">' +
       '<span class="date">' + esc(fmtDate(c.date, { weekday: 'long' })) + '</span>' +
-      '<h3 class="cafe">' + esc(c.cafe || 'Café') + '</h3>' +
-      (c.order ? '<p class="order">' + esc(c.order) + '</p>' : '') +
-      (c.beans ? '<p class="beans">' + esc(c.beans) + '</p>' : '') +
-      (c.description ? '<p class="desc">' + esc(c.description) + '</p>' : '') +
+      '<h3 class="ask">How was today’s coffee?</h3>' +
+      (from ? '<p class="said">It was from ' + from + '.</p>' : '') +
+      (c.description ? '<p class="said">From my research, these beans are supposed to be <b>' + esc(c.description.replace(/\.$/, '')) + '</b>.</p>' : '') +
+      '<p class="ask-2">But how was it?</p>' +
     '</div>';
   }
 
@@ -49,30 +51,32 @@
     stars += '<button type="button" class="heart-btn" data-heart aria-pressed="' + d.heart + '" aria-label="Loved it">' + heartSVG() + '</button>';
     const busy = state.saving.has(c.id);
     return '<form class="card-rate" data-id="' + esc(c.id) + '">' +
-      '<span class="label" id="r-' + esc(c.id) + '">Your rating</span>' +
+      '<span class="label" id="r-' + esc(c.id) + '">Rating</span>' +
       '<div class="stars" role="radiogroup" aria-labelledby="r-' + esc(c.id) + '">' + stars + '</div>' +
       '<div class="word">' + esc(word(d.rating, d.heart)) + '</div>' +
       '<label class="label" for="c-' + esc(c.id) + '">Comment</label>' +
-      '<textarea id="c-' + esc(c.id) + '" data-comment maxlength="1000">' + esc(d.comment) + '</textarea>' +
+      '<textarea id="c-' + esc(c.id) + '" data-field="comment" maxlength="1000">' + esc(d.comment) + '</textarea>' +
+      '<label class="label" for="n-' + esc(c.id) + '">Notes</label>' +
+      '<textarea id="n-' + esc(c.id) + '" data-field="notes" maxlength="1000">' + esc(d.notes) + '</textarea>' +
       '<button class="btn" type="submit"' + (!d.rating || busy ? ' disabled' : '') + '>' + (busy ? 'Saving' : 'Submit') + '</button>' +
     '</form>';
   }
 
   function doneBlock(c) {
     return '<div class="card-rate">' +
-      '<span class="label">Your rating</span>' +
+      '<span class="label">Rating</span>' +
       '<div class="stars">' + mini(c.rating, c.heart).replace('class="mini"', 'class="mini big"') + '</div>' +
       '<div class="word">' + esc(word(c.rating, c.heart)) + '</div>' +
-      (c.comment ? '<p class="done-comment">“' + esc(c.comment) + '”</p>' : '') +
+      (c.comment ? '<span class="label">Comment</span><p class="done-text">' + esc(c.comment) + '</p>' : '') +
+      (c.notes ? '<span class="label">Notes</span><p class="done-text">' + esc(c.notes) + '</p>' : '') +
       '<span class="thanks">Thank you</span>' +
-      '<button type="button" class="btn-line" data-change="' + esc(c.id) + '" style="align-self:flex-start">Change</button>' +
     '</div>';
   }
 
   function renderToday(force) {
     const list = todayList();
     const sig = JSON.stringify(list.map(c => [c.id, c.cafe, c.date, c.order, c.beans, c.description, c.rating, c.heart, c.comment,
-      state.changing.has(c.id), state.saving.has(c.id)])) + state.loaded;
+      c.notes, state.saving.has(c.id)])) + state.loaded;
     if (!force && sig === state.todaySig) return; // keep what's being typed
     state.todaySig = sig;
 
@@ -80,8 +84,7 @@
     if (!state.loaded) { box.innerHTML = ''; return; }
     if (!list.length) { box.innerHTML = '<div class="waiting">Next coffee soon</div>'; return; }
     box.innerHTML = list.map(c => {
-      const rated = c.rating && !state.changing.has(c.id);
-      return '<article class="card">' + info(c) + (rated ? doneBlock(c) : rateForm(c)) + '</article>';
+      return '<article class="card">' + info(c) + (c.rating ? doneBlock(c) : rateForm(c)) + '</article>';
     }).join('');
   }
 
@@ -98,15 +101,6 @@
   }
 
   $('todayCards').addEventListener('click', e => {
-    const change = e.target.closest('[data-change]');
-    if (change) {
-      const id = change.dataset.change;
-      const c = state.coffees.find(x => x.id === id);
-      if (c) state.drafts[id] = { rating: c.rating || 0, heart: !!c.heart, comment: c.comment || '' };
-      state.changing.add(id);
-      renderToday(true);
-      return;
-    }
     const form = e.target.closest('form.card-rate');
     if (!form) return;
     const d = state.drafts[form.dataset.id];
@@ -124,9 +118,10 @@
   });
 
   $('todayCards').addEventListener('input', e => {
-    if (!e.target.matches('[data-comment]')) return;
+    const field = e.target.dataset.field;
+    if (!field) return;
     const form = e.target.closest('form.card-rate');
-    state.drafts[form.dataset.id].comment = e.target.value;
+    state.drafts[form.dataset.id][field] = e.target.value;
   });
 
   $('todayCards').addEventListener('submit', e => {
@@ -139,7 +134,6 @@
     renderToday(true);
     Store.rate(id, d).then(() => {
       state.saving.delete(id);
-      state.changing.delete(id);
       state.justRated.add(id);
       delete state.drafts[id];
       toast('Saved');
@@ -179,6 +173,7 @@
         '<span class="td-coffee" role="cell"><b>' + esc(c.order) + '</b>' + (c.beans ? '<span>' + esc(c.beans) + '</span>' : '') + '</span>' +
         '<span class="td-rating" role="cell">' + mini(c.rating, c.heart) + '</span>' +
         '<span class="td-comment" role="cell">' + esc(c.comment || '') + '</span>' +
+        '<span class="td-notes" role="cell">' + esc(c.notes || '') + '</span>' +
       '</div>'
     ).join('');
   }

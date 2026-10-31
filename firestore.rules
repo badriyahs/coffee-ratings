@@ -22,15 +22,17 @@ service cloud.firestore {
         && request.resource.data.keys().hasOnly(['cafe', 'date', 'order', 'beans', 'description', 'createdAt']);
       allow delete: if isAdmin();
 
-      // Badriyah can change anything. The taster can only add or change the rating part.
+      // Badriyah can change anything. The taster can only add the rating, comment and notes.
       allow update: if isAdmin() || (isSignedIn()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating', 'heart', 'comment', 'ratedAt'])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating', 'heart', 'comment', 'notes', 'ratedAt'])
         && request.resource.data.rating is int
         && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
         && request.resource.data.heart is bool
         && (request.resource.data.heart == false || request.resource.data.rating == 5)
         && request.resource.data.comment is string
         && request.resource.data.comment.size() <= 1000
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 1000
         && request.resource.data.ratedAt == request.time
       );
     }
