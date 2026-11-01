@@ -274,3 +274,10 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
 .mini.big svg { width: 26px; height: 26px; }
 .mini.big .heart { margin-left: 10px; }
 .word:empty { display: none; }
+.own-btn { align-self: flex-start; }
+#ownBox:empty { display: none; }
+.own-tag {
+  display: block; margin-top: 4px;
+  font-family: var(--body); text-transform: none; letter-spacing: 0;
+  font-size: 12px; color: var(--stone);
+}

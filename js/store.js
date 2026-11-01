@@ -5,7 +5,9 @@
 
    coffees/{id}   cafe, date (YYYY-MM-DD), order, beans, description, createdAt   (added by Badriyah)
                   description = what the beans are supposed to taste like ("earthy, chocolatey and spicy")
-                  rating (1-5), heart (only with 5), comment, notes, ratedAt       (added by the taster) */
+                  question = her note to him ("You mentioned it's even more bitter. Is that a good thing?")
+                  rating (1-5), heart (only with 5), comment, notes, ratedAt       (added by the taster)
+                  own: true = a coffee he added himself, with his rating            (added by the taster) */
 window.Store = (function () {
   const cfg = (window.CR_CONFIG || {}).firebase;
   const demo = !cfg;
@@ -23,6 +25,12 @@ window.Store = (function () {
     const rating = Math.max(1, Math.min(5, Math.round(+r.rating || 0)));
     return { rating, heart: !!r.heart && rating === 5, comment: clean(r.comment, 1000), notes: clean(r.notes, 1000) };
   };
+
+  // A coffee he had on his own: his café, order and beans plus his rating, all at once
+  const ownBody = d => ({
+    cafe: clean(d.cafe, 120), order: clean(d.order, 160), beans: clean(d.beans, 160),
+    date: UI.todayKW(), own: true, ...ratingBody(d)
+  });
 
   /* ---------- preview mode ---------- */
 
@@ -75,6 +83,11 @@ window.Store = (function () {
       const c = db().coffees[id];
       if (!c) throw new Error('missing');
       Object.assign(c, ratingBody(r), { ratedAt: Date.now() });
+      commit();
+    },
+    async addOwn(d) {
+      const id = newId();
+      db().coffees[id] = { id, ...ownBody(d), createdAt: Date.now(), ratedAt: Date.now() };
       commit();
     },
     async saveCoffee(id, data) {
@@ -152,6 +165,10 @@ window.Store = (function () {
     async rate(id, r) {
       await ready;
       await coffees().doc(id).update({ ...ratingBody(r), ratedAt: stamp() });
+    },
+    async addOwn(d) {
+      await ready;
+      await coffees().add({ ...ownBody(d), createdAt: stamp(), ratedAt: stamp() });
     },
     async saveCoffee(id, data) {
       await ready;
