@@ -85,7 +85,7 @@
   }
 
   function renderOwn() {
-    $('openOwn').hidden = ownOpen || !state.loaded;
+    $('openOwn').setAttribute('aria-expanded', String(ownOpen));
     if (!ownOpen) { $('ownBox').innerHTML = ''; return; }
     if (!state.drafts[OWN]) state.drafts[OWN] = { cafe: '', order: '', beans: '', rating: 0, heart: false, comment: '', notes: '' };
     $('ownBox').innerHTML = '<form class="card" data-id="' + OWN + '" autocomplete="off">' +
@@ -97,10 +97,16 @@
         '<button type="button" class="btn-line" data-close-own style="align-self:flex-start">Cancel</button>' +
       '</div>' +
     '</form>';
-    $('o-cafe').focus();
+    $('ownBox').scrollIntoView({ block: 'start' });
+    $('o-cafe').focus({ preventScroll: true });
   }
 
-  $('openOwn').addEventListener('click', () => { ownOpen = true; renderOwn(); });
+  // The + in the header opens it (or brings it back into view if it's already open)
+  $('openOwn').addEventListener('click', () => {
+    if (ownOpen) { $('ownBox').scrollIntoView({ block: 'start' }); return; }
+    ownOpen = true;
+    renderOwn();
+  });
 
   function doneBlock(c) {
     return '<div class="card-rate">' +

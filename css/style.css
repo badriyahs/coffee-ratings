@@ -274,8 +274,17 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
 .mini.big svg { width: 26px; height: 26px; }
 .mini.big .heart { margin-left: 10px; }
 .word:empty { display: none; }
-.own-btn { align-self: flex-start; }
+#ownBox { scroll-margin-top: 72px; }
 #ownBox:empty { display: none; }
+.topbar .links { align-items: center; }
+.plus {
+  width: 30px; height: 30px; padding: 0;
+  display: inline-grid; place-items: center;
+  background: none; border: 1px solid var(--ink); border-radius: 50%;
+}
+.plus svg { width: 14px; height: 14px; fill: none; stroke: var(--ink); stroke-width: 1.4; stroke-linecap: round; }
+.plus:hover, .plus[aria-expanded="true"] { background: var(--ink); }
+.plus:hover svg, .plus[aria-expanded="true"] svg { stroke: var(--paper); }
 .own-tag {
   display: block; margin-top: 4px;
   font-family: var(--body); text-transform: none; letter-spacing: 0;
