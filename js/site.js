@@ -90,7 +90,7 @@
     if (!state.drafts[OWN]) state.drafts[OWN] = { cafe: '', order: '', beans: '', rating: 0, heart: false, comment: '', notes: '' };
     $('ownBox').innerHTML = '<form class="card" data-id="' + OWN + '" autocomplete="off">' +
       '<div class="card-info">' +
-        '<h3 class="ask">Your own coffee</h3>' +
+        '<h3 class="ask">What’s today’s coffee?</h3>' +
         ownField('Café', 'cafe', true) + ownField('Order', 'order', true) + ownField('Beans', 'beans', false) +
       '</div>' +
       '<div class="card-rate">' + rateFields({ id: OWN }) +
