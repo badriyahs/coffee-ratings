@@ -290,3 +290,4 @@ textarea:focus, input:focus { border-color: var(--ink); outline: none; }
   font-family: var(--body); text-transform: none; letter-spacing: 0;
   font-size: 12px; color: var(--stone);
 }
+.overdue { margin-left: 12px; color: var(--heart); font-weight: 600; }

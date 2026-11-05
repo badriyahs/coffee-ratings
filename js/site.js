@@ -33,7 +33,8 @@
     const from = [c.cafe && '<b>' + esc(c.cafe) + '</b>', c.order && '<b>' + esc(c.order) + '</b>',
       c.beans && 'beans: <b>' + esc(c.beans) + '</b>'].filter(Boolean).join(', ');
     return '<div class="card-info">' +
-      '<span class="date">' + esc(fmtDate(c.date, { weekday: 'long' })) + '</span>' +
+      '<span class="date">' + esc(fmtDate(c.date, { weekday: 'long' })) +
+        (!c.rating && c.date < todayKW() ? '<span class="overdue">Overdue</span>' : '') + '</span>' +
       '<h3 class="ask">How was today’s coffee?</h3>' +
       (from ? '<p class="said">It was from ' + from + '.</p>' : '') +
       (c.description ? '<p class="said">From my research, these beans are supposed to be <b>' + esc(c.description.replace(/\.$/, '')) + '</b>.</p>' : '') +
